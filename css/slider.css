@@ -1,0 +1,13 @@
+.bxslider-thumbs li {
+  width: 72px !important; /* thumb image width + thumb image border width */
+}
+.bxslider-thumbs a {
+  display: block;
+  border-size: 1px;
+  border-style: solid;
+  border-color: transparent;
+}
+.bxslider-thumbs a:hover,
+.bxslider-thumbs a.active {
+  border-color: tomato;
+}
