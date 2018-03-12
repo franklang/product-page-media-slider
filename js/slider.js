@@ -16,6 +16,8 @@ ACC.slider = {
         ["bindSlider", $(".bxslider").length > 0]
         ,"hoverIntent"
         ,"handlePrevNextControls"
+
+        ,"debugInfo"
     ],
 
     oldIndex: null,
@@ -25,6 +27,7 @@ ACC.slider = {
     slideAmount: null,
     triggerPrevValues: null,
     triggerNextValues: null,
+    // sliderThumbs: null,
 
     sliderConfig:{
         "thumbs":{
@@ -34,12 +37,7 @@ ACC.slider = {
             slideMargin: 10,
             infiniteLoop: false,
             hideControlOnEnd: true,
-            pager: false,
-            onSlideBefore: function ($slideElement, oldIndex, newIndex){
-                ACC.slider.oldIndex = oldIndex;
-                ACC.slider.newIndex = newIndex;
-                // console.log('oldIndex: ' + ACC.slider.oldIndex + ', newIndex: ' + ACC.slider.newIndex);
-            }
+            pager: false
         },
         "large":{
             pagerCustom: '.js-bxslider-thumbs',
@@ -56,6 +54,7 @@ ACC.slider = {
                 // if newIndex == 0 ou == 5 ou == 11 click .prev
                 if(ACC.slider.triggerNextValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
+                    ACC.slider.newIndex = newIndex;
                     console.log('newIndex: ' + newIndex);
                 }
 
@@ -68,6 +67,7 @@ ACC.slider = {
                 // if newIndex == 0 ou == 5 ou == 11 click .prev
                 if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
+                    ACC.slider.newIndex = newIndex;
                     console.log('newIndex: ' + newIndex);
                 }
             }
@@ -75,7 +75,7 @@ ACC.slider = {
     },
 
     bindSlider: function(){
-        $('.bxslider', '#productVisuals').each(function(){
+        $('.bxslider', '#productMedia').each(function(){
             var $c = $(this)
             $.each(ACC.slider.sliderConfig,function(key,config){
                 if($c.hasClass('js-bxslider-'+key)){
@@ -84,6 +84,10 @@ ACC.slider = {
                 }
             });
         });
+
+        // this.sliderThumbs = $('.js-bxslider-thumbs').bxSlider(ACC.slider.sliderConfig.thumbs);
+        // this.sliderThumbs.goToSlide(3);
+        // $('.js-bxslider-large').bxSlider(ACC.slider.sliderConfig.large);
 
         console.log('thumbs minSlides: ' + ACC.slider.sliderConfig.thumbs.minSlides);
     },
@@ -105,7 +109,7 @@ ACC.slider = {
         // get amount of slides in slider
         var slideAmount = ACC.slider.$large.children('li:not(.bx-clone)').length;
         ACC.slider.slideAmount = slideAmount;
-        console.log('slideAmount: ', + ACC.slider.slideAmount);
+        // console.log('slideAmount: ', + ACC.slider.slideAmount);
 
         //
         var triggerNextValues = new Array(Math.ceil(ACC.slider.slideAmount / ACC.slider.sliderConfig.thumbs.minSlides)).fill(null).map((u, i) => i);
@@ -120,7 +124,22 @@ ACC.slider = {
         ACC.slider.triggerNextValues = triggerNextValues;
         ACC.slider.triggerPrevValues = triggerPrevValues;
 
-        console.table(ACC.slider.triggerNextValues);
-        console.table(ACC.slider.triggerPrevValues);
+        // console.table(ACC.slider.triggerNextValues);
+        // console.table(ACC.slider.triggerPrevValues);
+    },
+
+    debugInfo: function(){
+      $('body').append('<div id="debugInfo" />');
+      $('#debugInfo').append(
+           '<ul>'
+          +'    <li>slides in slider: <strong id="slideAmount"></strong></li>'
+          +'    <li>active slide: <strong id="newIndex"></strong></li>'
+          +'</ul>');
+
+      $('#slideAmount').text(+ACC.slider.slideAmount);
+      $('#newIndex').text(+ACC.slider.newIndex);
+      $(document).on('click', function(e) {
+          $('#newIndex').text(+ACC.slider.newIndex);
+      });
     }
 };
