@@ -27,7 +27,8 @@ ACC.slider = {
     slideAmount: null,
     triggerPrevValues: null,
     triggerNextValues: null,
-    // sliderThumbs: null,
+    initSliderThumbs: null,
+    initSliderLarge: null,
 
     sliderConfig:{
         "thumbs":{
@@ -44,52 +45,30 @@ ACC.slider = {
             onSlideBefore: function($slideElement, oldIndex, newIndex){
                 ACC.slider.oldIndex = oldIndex;
                 ACC.slider.newIndex = newIndex;
-                // console.log('oldIndex: ' + ACC.slider.oldIndex + ', newIndex: ' + ACC.slider.newIndex);
             },
             onSlideNext: function($slideElement, oldIndex, newIndex){
-                // How to find if x equals any value in an array in javascript [duplicate]
-                // if newIndex == any value of triggerNextValues array, click .next
-                // if newIndex == any value of triggerPrevValues array, click .prev
-                // if newIndex == 6 ou == 12 click .next
-                // if newIndex == 0 ou == 5 ou == 11 click .prev
                 if(ACC.slider.triggerNextValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
                     ACC.slider.newIndex = newIndex;
-                    console.log('newIndex: ' + newIndex);
+                }
+                else if(newIndex == 0){
+                  ACC.slider.initSliderThumbs.goToSlide(0);
                 }
 
             },
             onSlidePrev: function($slideElement, oldIndex, newIndex){
-                // How to find if x equals any value in an array in javascript [duplicate]
-                // if newIndex == any value of triggerNextValues array, click .next
-                // if newIndex == any value of triggerPrevValues array, click .prev
-                // if newIndex == 6 ou == 12 click .next
-                // if newIndex == 0 ou == 5 ou == 11 click .prev
                 if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
                     ACC.slider.newIndex = newIndex;
-                    console.log('newIndex: ' + newIndex);
                 }
             }
         }
     },
 
     bindSlider: function(){
-        $('.bxslider', '#productMedia').each(function(){
-            var $c = $(this)
-            $.each(ACC.slider.sliderConfig,function(key,config){
-                if($c.hasClass('js-bxslider-'+key)){
-                    var $e = $('.js-bxslider-'+key);
-                    $e.bxSlider(config);
-                }
-            });
-        });
-
-        // this.sliderThumbs = $('.js-bxslider-thumbs').bxSlider(ACC.slider.sliderConfig.thumbs);
-        // this.sliderThumbs.goToSlide(3);
-        // $('.js-bxslider-large').bxSlider(ACC.slider.sliderConfig.large);
-
-        console.log('thumbs minSlides: ' + ACC.slider.sliderConfig.thumbs.minSlides);
+        this.initSliderThumbs = $('.js-bxslider-thumbs').bxSlider(ACC.slider.sliderConfig.thumbs);
+        this.initSliderLarge = $('.js-bxslider-large').bxSlider(ACC.slider.sliderConfig.large);
+        // ACC.slider.initSliderLarge.goToSlide(0);
     },
 
     onMouseOverThumb: function(){
@@ -109,7 +88,6 @@ ACC.slider = {
         // get amount of slides in slider
         var slideAmount = ACC.slider.$large.children('li:not(.bx-clone)').length;
         ACC.slider.slideAmount = slideAmount;
-        // console.log('slideAmount: ', + ACC.slider.slideAmount);
 
         //
         var triggerNextValues = new Array(Math.ceil(ACC.slider.slideAmount / ACC.slider.sliderConfig.thumbs.minSlides)).fill(null).map((u, i) => i);
