@@ -20,7 +20,6 @@ ACC.slider = {
         ,"debugInfo"
     ],
 
-    oldIndex: null,
     newIndex: null,
     $thumbs: $('.js-bxslider-thumbs'),
     $large: $('.js-bxslider-large'),
@@ -38,18 +37,17 @@ ACC.slider = {
             slideMargin: 10,
             infiniteLoop: false,
             hideControlOnEnd: true,
-            pager: false
+            pager: false,
+            startSlide: 0
         },
         "large":{
             pagerCustom: '.js-bxslider-thumbs',
             onSlideBefore: function($slideElement, oldIndex, newIndex){
-                ACC.slider.oldIndex = oldIndex;
                 ACC.slider.newIndex = newIndex;
             },
             onSlideNext: function($slideElement, oldIndex, newIndex){
                 if(ACC.slider.triggerNextValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
-                    ACC.slider.newIndex = newIndex;
                 }
                 else if(newIndex == 0){
                   ACC.slider.initSliderThumbs.goToSlide(0);
@@ -59,7 +57,12 @@ ACC.slider = {
             onSlidePrev: function($slideElement, oldIndex, newIndex){
                 if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
-                    ACC.slider.newIndex = newIndex;
+                }
+                else if(newIndex == ACC.slider.slideAmount -1){
+                  var numGroups = Math.ceil(ACC.slider.slideAmount / ACC.slider.sliderConfig.thumbs.minSlides);
+
+                  ACC.slider.sliderConfig.thumbs.startSlide = numGroups -1;
+                  ACC.slider.initSliderThumbs.reloadSlider(ACC.slider.sliderConfig.thumbs);
                 }
             }
         }
@@ -68,7 +71,6 @@ ACC.slider = {
     bindSlider: function(){
         this.initSliderThumbs = $('.js-bxslider-thumbs').bxSlider(ACC.slider.sliderConfig.thumbs);
         this.initSliderLarge = $('.js-bxslider-large').bxSlider(ACC.slider.sliderConfig.large);
-        // ACC.slider.initSliderLarge.goToSlide(0);
     },
 
     onMouseOverThumb: function(){
@@ -101,9 +103,6 @@ ACC.slider = {
         triggerNextValues.splice(0, 1);
         ACC.slider.triggerNextValues = triggerNextValues;
         ACC.slider.triggerPrevValues = triggerPrevValues;
-
-        // console.table(ACC.slider.triggerNextValues);
-        // console.table(ACC.slider.triggerPrevValues);
     },
 
     debugInfo: function(){
