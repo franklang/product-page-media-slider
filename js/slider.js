@@ -1,5 +1,3 @@
-// https://web.archive.org/web/20131127012941/http://bxslider.com:80/options
-
 // Accessing bxslider's slider object inside its “onSliderLoad” callback returns undefined
     // https://github.com/stevenwanderski/bxslider-4/issues/475
     // https://codepen.io/eniosan/pen/XJxMNL
@@ -21,16 +19,17 @@ ACC.slider = {
     ],
 
     newIndex: null,
-    $thumbs: $('.js-bxslider-thumbs'),
-    $large: $('.js-bxslider-large'),
-    slideCount: null,
+    $thumb: $('.js-bxslider-thumb'),
+    $main: $('.js-bxslider-main'),
+    thumbSlideCount: null,
+    mainSlideCount: null,
     triggerPrevValues: null,
     triggerNextValues: null,
-    initSliderThumbs: null,
-    initSliderLarge: null,
+    initThumb: null,
+    initMain: null,
 
     sliderConfig:{
-        "thumbs":{
+        "thumb":{
             mode: 'vertical',
             slideWidth: 300,
             minSlides: 6,
@@ -40,37 +39,34 @@ ACC.slider = {
             pager: false,
             startSlide: 0
         },
-        "large":{
-            pagerCustom: '.js-bxslider-thumbs',
+        "main":{
+            pagerCustom: '.js-bxslider-thumb',
             onSlideBefore: function($slideElement, oldIndex, newIndex){
                 ACC.slider.newIndex = newIndex;
             },
             onSlideNext: function($slideElement, oldIndex, newIndex){
                 if(ACC.slider.triggerNextValues.indexOf(newIndex) !== -1){
-                    ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
+                    ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
                 }
                 else if(newIndex == 0){
-                  ACC.slider.initSliderThumbs.goToSlide(0);
+                  ACC.slider.initThumb.goToSlide(0);
                 }
-
             },
             onSlidePrev: function($slideElement, oldIndex, newIndex){
                 if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
-                    ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
+                    ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
                 }
-                else if(newIndex == ACC.slider.slideCount -1){
-                  var numGroups = Math.ceil(ACC.slider.slideCount / ACC.slider.sliderConfig.thumbs.minSlides);
-
-                  ACC.slider.sliderConfig.thumbs.startSlide = numGroups -1;
-                  ACC.slider.initSliderThumbs.reloadSlider(ACC.slider.sliderConfig.thumbs);
+                else if(newIndex == ACC.slider.mainSlideCount -1){
+                  ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.thumbSlideCount -1;
+                  ACC.slider.initThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
                 }
             }
         }
     },
 
     bindSlider: function(){
-        this.initSliderThumbs = $('.js-bxslider-thumbs').bxSlider(ACC.slider.sliderConfig.thumbs);
-        this.initSliderLarge = $('.js-bxslider-large').bxSlider(ACC.slider.sliderConfig.large);
+        this.initThumb = $('.js-bxslider-thumb').bxSlider(ACC.slider.sliderConfig.thumb);
+        this.initMain = $('.js-bxslider-main').bxSlider(ACC.slider.sliderConfig.main);
     },
 
     onMouseOverThumb: function(){
@@ -79,7 +75,7 @@ ACC.slider = {
     },
 
     hoverIntent: function(){
-        ACC.slider.$thumbs.hoverIntent({
+        ACC.slider.$thumb.hoverIntent({
             over: ACC.slider.onMouseOverThumb,
             selector: 'li',
             sensivity: 12
@@ -87,13 +83,12 @@ ACC.slider = {
     },
 
     handlePrevNextControls: function(){
-        // get amount of slides in slider
-        ACC.slider.slideCount = ACC.slider.initSliderLarge.getSlideCount();
+        ACC.slider.mainSlideCount = ACC.slider.initMain.getSlideCount();
+        ACC.slider.thumbSlideCount = Math.ceil(ACC.slider.mainSlideCount / ACC.slider.sliderConfig.thumb.minSlides);
 
-        //
-        var triggerNextValues = new Array(Math.ceil(ACC.slider.slideCount / ACC.slider.sliderConfig.thumbs.minSlides)).fill(null).map((u, i) => i);
+        var triggerNextValues = new Array(ACC.slider.thumbSlideCount).fill(null).map((u, i) => i);
         for (var i = 0; i < triggerNextValues.length; i++) {
-          triggerNextValues[i] *= ACC.slider.sliderConfig.thumbs.minSlides;
+          triggerNextValues[i] *= ACC.slider.sliderConfig.thumb.minSlides;
         }
         var triggerPrevValues = triggerNextValues.map(function(value){
             return value - 1;
@@ -108,11 +103,13 @@ ACC.slider = {
       $('body').append('<div id="debugInfo" />');
       $('#debugInfo').append(
            '<ul>'
-          +'    <li>slides in slider: <strong id="slideCount"></strong></li>'
-          +'    <li>active slide: <strong id="newIndex"></strong></li>'
+          +'    <li>Slides in main slider: <strong id="mainSlideCount"></strong></li>'
+          +'    <li>Slides in thumb slider: <strong id="thumbSlideCount"></strong></li>'
+          +'    <li>Active slide: <strong id="newIndex"></strong></li>'
           +'</ul>');
 
-      $('#slideCount').text(+ACC.slider.slideCount);
+      $('#mainSlideCount').text(+ACC.slider.mainSlideCount);
+      $('#thumbSlideCount').text(+ACC.slider.thumbSlideCount);
       $('#newIndex').text(+ACC.slider.newIndex);
       $(document).on('click', function(e) {
           $('#newIndex').text(+ACC.slider.newIndex);
