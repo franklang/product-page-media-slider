@@ -14,7 +14,7 @@ ACC.slider = {
         ["bindSlider", $(".bxslider").length > 0]
        ,["hoverIntent", $(".bxslider").length > 0]
        ,["handlePrevNextControls", $(".bxslider").length > 0]
-       ,["debugInfo", $(".bxslider").length > 0]
+       // ,["debugInfo", $(".bxslider").length > 0]
     ],
 
     newIndex: null,
