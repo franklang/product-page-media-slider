@@ -23,7 +23,7 @@ ACC.slider = {
     newIndex: null,
     $thumbs: $('.js-bxslider-thumbs'),
     $large: $('.js-bxslider-large'),
-    slideAmount: null,
+    slideCount: null,
     triggerPrevValues: null,
     triggerNextValues: null,
     initSliderThumbs: null,
@@ -58,8 +58,8 @@ ACC.slider = {
                 if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
                     ACC.slider.$thumbs.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
                 }
-                else if(newIndex == ACC.slider.slideAmount -1){
-                  var numGroups = Math.ceil(ACC.slider.slideAmount / ACC.slider.sliderConfig.thumbs.minSlides);
+                else if(newIndex == ACC.slider.slideCount -1){
+                  var numGroups = Math.ceil(ACC.slider.slideCount / ACC.slider.sliderConfig.thumbs.minSlides);
 
                   ACC.slider.sliderConfig.thumbs.startSlide = numGroups -1;
                   ACC.slider.initSliderThumbs.reloadSlider(ACC.slider.sliderConfig.thumbs);
@@ -88,11 +88,10 @@ ACC.slider = {
 
     handlePrevNextControls: function(){
         // get amount of slides in slider
-        var slideAmount = ACC.slider.$large.children('li:not(.bx-clone)').length;
-        ACC.slider.slideAmount = slideAmount;
+        ACC.slider.slideCount = ACC.slider.initSliderLarge.getSlideCount();
 
         //
-        var triggerNextValues = new Array(Math.ceil(ACC.slider.slideAmount / ACC.slider.sliderConfig.thumbs.minSlides)).fill(null).map((u, i) => i);
+        var triggerNextValues = new Array(Math.ceil(ACC.slider.slideCount / ACC.slider.sliderConfig.thumbs.minSlides)).fill(null).map((u, i) => i);
         for (var i = 0; i < triggerNextValues.length; i++) {
           triggerNextValues[i] *= ACC.slider.sliderConfig.thumbs.minSlides;
         }
@@ -109,11 +108,11 @@ ACC.slider = {
       $('body').append('<div id="debugInfo" />');
       $('#debugInfo').append(
            '<ul>'
-          +'    <li>slides in slider: <strong id="slideAmount"></strong></li>'
+          +'    <li>slides in slider: <strong id="slideCount"></strong></li>'
           +'    <li>active slide: <strong id="newIndex"></strong></li>'
           +'</ul>');
 
-      $('#slideAmount').text(+ACC.slider.slideAmount);
+      $('#slideCount').text(+ACC.slider.slideCount);
       $('#newIndex').text(+ACC.slider.newIndex);
       $(document).on('click', function(e) {
           $('#newIndex').text(+ACC.slider.newIndex);
