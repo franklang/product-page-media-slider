@@ -12,10 +12,9 @@ ACC.slider = {
 
     _autoload: [
         ["bindSlider", $(".bxslider").length > 0]
-        ,"hoverIntent"
-        ,"handlePrevNextControls"
-
-        ,"debugInfo"
+       ,["hoverIntent", $(".bxslider").length > 0]
+       ,["handlePrevNextControls", $(".bxslider").length > 0]
+       ,["debugInfo", $(".bxslider").length > 0]
     ],
 
     newIndex: null,
@@ -91,7 +90,7 @@ ACC.slider = {
           triggerNextValues[i] *= ACC.slider.sliderConfig.thumb.minSlides;
         }
         var triggerPrevValues = triggerNextValues.map(function(value){
-            return value - 1;
+            return value -1;
         });
         triggerPrevValues[0] = 0;
         triggerNextValues.splice(0, 1);
