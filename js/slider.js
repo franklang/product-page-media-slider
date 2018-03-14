@@ -11,9 +11,7 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
     _autoload: [
-        ["bindSlider", $(".bxslider").length > 0]
-       ,["hoverIntent", $(".bxslider").length > 0]
-       ,["handlePrevNextControls", $(".bxslider").length > 0]
+        ["init", $(".bxslider").length > 0]
        // ,["debugInfo", $(".bxslider").length > 0]
     ],
 
@@ -24,8 +22,8 @@ ACC.slider = {
     mainSlideCount: null,
     triggerPrevValues: null,
     triggerNextValues: null,
-    initThumb: null,
-    initMain: null,
+    sliderThumb: null,
+    sliderMain: null,
 
     sliderConfig:{
         "thumb":{
@@ -48,7 +46,7 @@ ACC.slider = {
                     ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
                 }
                 else if(newIndex == 0){
-                  ACC.slider.initThumb.goToSlide(0);
+                  ACC.slider.sliderThumb.goToSlide(0);
                 }
             },
             onSlidePrev: function($slideElement, oldIndex, newIndex){
@@ -57,15 +55,18 @@ ACC.slider = {
                 }
                 else if(newIndex == ACC.slider.mainSlideCount -1){
                   ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.thumbSlideCount -1;
-                  ACC.slider.initThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
+                  ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
                 }
             }
         }
     },
 
-    bindSlider: function(){
-        this.initThumb = $('.js-bxslider-thumb').bxSlider(ACC.slider.sliderConfig.thumb);
-        this.initMain = $('.js-bxslider-main').bxSlider(ACC.slider.sliderConfig.main);
+    init: function(){
+        this.sliderThumb = $('.js-bxslider-thumb').bxSlider(ACC.slider.sliderConfig.thumb);
+        this.sliderMain = $('.js-bxslider-main').bxSlider(ACC.slider.sliderConfig.main);
+
+        ACC.slider.hoverIntent();
+        ACC.slider.handlePrevNextControls();
     },
 
     onMouseOverThumb: function(){
@@ -82,7 +83,7 @@ ACC.slider = {
     },
 
     handlePrevNextControls: function(){
-        ACC.slider.mainSlideCount = ACC.slider.initMain.getSlideCount();
+        ACC.slider.mainSlideCount = ACC.slider.sliderMain.getSlideCount();
         ACC.slider.thumbSlideCount = Math.ceil(ACC.slider.mainSlideCount / ACC.slider.sliderConfig.thumb.minSlides);
 
         var triggerNextValues = new Array(ACC.slider.thumbSlideCount).fill(null).map((u, i) => i);
