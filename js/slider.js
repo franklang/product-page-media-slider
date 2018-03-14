@@ -12,6 +12,7 @@ ACC.slider = {
 
     _autoload: [
         ["init", $(".bxslider").length > 0]
+       // Uncomment line below to show debug info
        // ,["debugInfo", $(".bxslider").length > 0]
     ],
 
@@ -33,8 +34,7 @@ ACC.slider = {
             slideMargin: 10,
             infiniteLoop: false,
             hideControlOnEnd: true,
-            pager: false,
-            startSlide: 0
+            pager: false
         },
         "main":{
             pagerCustom: '.js-bxslider-thumb',
@@ -62,41 +62,41 @@ ACC.slider = {
     },
 
     init: function(){
-        this.sliderThumb = $('.js-bxslider-thumb').bxSlider(ACC.slider.sliderConfig.thumb);
-        this.sliderMain = $('.js-bxslider-main').bxSlider(ACC.slider.sliderConfig.main);
+        this.sliderThumb = $('.js-bxslider-thumb').bxSlider(this.sliderConfig.thumb);
+        this.sliderMain = $('.js-bxslider-main').bxSlider(this.sliderConfig.main);
 
-        ACC.slider.hoverIntent();
-        ACC.slider.handlePrevNextControls();
+        this.hoverIntent();
+        this.handlePrevNextControls();
     },
 
     onMouseOverThumb: function(){
-        ACC.slider.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
+        this.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
         $(this).children('a').click();
     },
 
     hoverIntent: function(){
-        ACC.slider.$thumb.hoverIntent({
-            over: ACC.slider.onMouseOverThumb,
+        this.$thumb.hoverIntent({
+            over: this.onMouseOverThumb,
             selector: 'li',
             sensivity: 12
         });
     },
 
     handlePrevNextControls: function(){
-        ACC.slider.mainSlideCount = ACC.slider.sliderMain.getSlideCount();
-        ACC.slider.thumbSlideCount = Math.ceil(ACC.slider.mainSlideCount / ACC.slider.sliderConfig.thumb.minSlides);
+        this.mainSlideCount = this.sliderMain.getSlideCount();
+        this.thumbSlideCount = Math.ceil(this.mainSlideCount / this.sliderConfig.thumb.minSlides);
 
-        var triggerNextValues = new Array(ACC.slider.thumbSlideCount).fill(null).map((u, i) => i);
+        var triggerNextValues = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
         for (var i = 0; i < triggerNextValues.length; i++) {
-          triggerNextValues[i] *= ACC.slider.sliderConfig.thumb.minSlides;
+          triggerNextValues[i] *= this.sliderConfig.thumb.minSlides;
         }
         var triggerPrevValues = triggerNextValues.map(function(value){
             return value -1;
         });
         triggerPrevValues[0] = 0;
         triggerNextValues.splice(0, 1);
-        ACC.slider.triggerNextValues = triggerNextValues;
-        ACC.slider.triggerPrevValues = triggerPrevValues;
+        this.triggerNextValues = triggerNextValues;
+        this.triggerPrevValues = triggerPrevValues;
     },
 
     debugInfo: function(){
@@ -108,11 +108,11 @@ ACC.slider = {
           +'    <li>Active slide: <strong id="newIndex"></strong></li>'
           +'</ul>');
 
-      $('#mainSlideCount').text(+ACC.slider.mainSlideCount);
-      $('#thumbSlideCount').text(+ACC.slider.thumbSlideCount);
-      $('#newIndex').text(+ACC.slider.newIndex);
+      $('#mainSlideCount').text(this.mainSlideCount);
+      $('#thumbSlideCount').text(this.thumbSlideCount);
+      $('#newIndex').text(+this.newIndex);
       $(document).on('click', function(e) {
-          $('#newIndex').text(+ACC.slider.newIndex);
+          $('#newIndex').text(ACC.slider.newIndex);
       });
     }
 };
