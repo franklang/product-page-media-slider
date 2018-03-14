@@ -1,3 +1,25 @@
+.page .thumb-pager,
+.page .main-slider,
+.modal .thumb-pager,
+.modal .main-slider {
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.page .thumb-pager,
+.modal .thumb-pager {
+  width: 16.66666667%; /* .col-md-2 */
+}
+.page .main-slider {
+  width: 50%; /* .col-md-6 */
+}
+.modal .main-slider {
+  width: 83.33333333%; /* .col-md-10 */
+}
+
 .bxslider-thumb li {
   width: 72px !important; /* thumb image width + thumb image border width */
 }

@@ -12,8 +12,10 @@ ACC.slider = {
 
     _autoload: [
         ["init", $(".bxslider").length > 0]
+       ,"getViewportHeight"
+       ,"handleModal"
        // Uncomment line below to show debug info
-       // ,["debugInfo", $(".bxslider").length > 0]
+       ,["debugInfo", $(".bxslider").length > 0]
     ],
 
     newIndex: null,
@@ -24,13 +26,15 @@ ACC.slider = {
     triggerPrevValues: null,
     triggerNextValues: null,
     sliderThumb: null,
+        sliderThumbMinSlides: 6,
+        sliderThumbModalMinSlides: 9,
     sliderMain: null,
 
     sliderConfig:{
         "thumb":{
             mode: 'vertical',
             slideWidth: 300,
-            minSlides: 6,
+            minSlides: 0,
             slideMargin: 10,
             infiniteLoop: false,
             hideControlOnEnd: true,
@@ -62,6 +66,8 @@ ACC.slider = {
     },
 
     init: function(){
+        ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
+
         this.sliderThumb = $('.js-bxslider-thumb').bxSlider(this.sliderConfig.thumb);
         this.sliderMain = $('.js-bxslider-main').bxSlider(this.sliderConfig.main);
 
@@ -97,6 +103,37 @@ ACC.slider = {
         triggerNextValues.splice(0, 1);
         this.triggerNextValues = triggerNextValues;
         this.triggerPrevValues = triggerPrevValues;
+    },
+
+    getViewportHeight: function(){
+        var viewportHeight = $(window).height();
+    },
+
+    onWindowResize: function(){
+        $(window).on('resize', function(){
+            var viewportHeight = $(window).height();
+            console.log(viewportHeight);
+        });
+    },
+
+    handleModal: function(){
+        $('#zoomModal').on('shown.bs.modal', function(){
+            $('#triggerModal').hide();
+            $('#sliders').appendTo('#modalSliders');
+
+            ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbModalMinSlides;
+            ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
+            ACC.slider.handlePrevNextControls();
+            // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
+        }).on('hide.bs.modal', function(){
+            $('#triggerModal').show();
+            $('#sliders').appendTo('#pageSliders');
+
+            ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
+            ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
+            ACC.slider.handlePrevNextControls();
+            // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
+        });
     },
 
     debugInfo: function(){
