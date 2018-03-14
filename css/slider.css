@@ -11,3 +11,13 @@
 .bxslider-thumb a.active {
   border-color: tomato;
 }
+
+.modal-header {
+  border-bottom: none 0;
+}
+
+@media (min-width: 1200px){
+  .modal-lg {
+    width: 1140px;
+  }
+}
