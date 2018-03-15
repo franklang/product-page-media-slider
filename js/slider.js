@@ -13,7 +13,6 @@ ACC.slider = {
     _autoload: [
         ["init", $(".bxslider").length > 0]
        ,"getViewportHeight"
-       ,"handleModal"
        // Uncomment line below to show debug info
        ,["debugInfo", $(".bxslider").length > 0]
     ],
@@ -73,6 +72,7 @@ ACC.slider = {
 
         this.hoverIntent();
         this.handlePrevNextControls();
+        this.handleModal();
     },
 
     onMouseOverThumb: function(){
@@ -125,7 +125,9 @@ ACC.slider = {
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
             // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
-        }).on('hide.bs.modal', function(){
+
+            ACC.slider.triggerWindowResizeEvent();
+        }).on('hidden.bs.modal', function(){
             $('#triggerModal').show();
             $('#sliders').appendTo('#pageSliders');
 
@@ -133,7 +135,15 @@ ACC.slider = {
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
             // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
+
+            ACC.slider.triggerWindowResizeEvent();
         });
+    },
+
+    triggerWindowResizeEvent: function(){
+        var evt = window.document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, window, 0);
+        window.dispatchEvent(evt);
     },
 
     debugInfo: function(){
