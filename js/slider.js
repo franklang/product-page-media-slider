@@ -12,7 +12,6 @@ ACC.slider = {
 
     _autoload: [
         ["init", $(".bxslider").length > 0]
-       // ,"getViewportHeight"
        // Uncomment line below to show debug info
        ,["debugInfo", $(".bxslider").length > 0]
     ],
@@ -113,7 +112,6 @@ ACC.slider = {
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbModalMinSlides;
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
-            // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
 
             ACC.slider.triggerWindowResizeEvent();
         }).on('hidden.bs.modal', function(){
@@ -121,9 +119,9 @@ ACC.slider = {
             $('#sliders').appendTo('#pageSliders');
 
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
+            // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
-            // ACC.slider.sliderThumb.goToSlide(ACC.slider.newIndex);
 
             ACC.slider.triggerWindowResizeEvent();
         });
@@ -135,16 +133,16 @@ ACC.slider = {
         window.dispatchEvent(evt);
     },
 
-    getViewportHeight: function(){
-        var viewportHeight = $(window).height();
-    },
+    // getViewportHeight: function(){
+    //     var viewportHeight = $(window).height();
+    // },
 
-    onWindowResize: function(){
-        $(window).on('resize', function(){
-            var viewportHeight = $(window).height();
-            console.log(viewportHeight);
-        });
-    },
+    // onWindowResize: function(){
+    //     $(window).on('resize', function(){
+    //         var viewportHeight = $(window).height();
+    //         console.log(viewportHeight);
+    //     });
+    // },
 
     debugInfo: function(){
       $('body').append('<div id="debugInfo" />');
@@ -160,6 +158,11 @@ ACC.slider = {
       $('#newIndex').text(+this.newIndex);
       $(document).on('click', function(e) {
           $('#newIndex').text(ACC.slider.newIndex);
+      });
+      $('#zoomModal').on('shown.bs.modal', function(){
+          $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
+      }).on('hidden.bs.modal', function(){
+          $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
       });
     }
 };
