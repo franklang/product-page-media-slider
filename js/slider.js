@@ -12,14 +12,14 @@ ACC.slider = {
 
     _autoload: [
         ["init", $(".bxslider").length > 0]
-       ,"getViewportHeight"
+       // ,"getViewportHeight"
        // Uncomment line below to show debug info
        ,["debugInfo", $(".bxslider").length > 0]
     ],
 
     newIndex: null,
-    $thumb: $('.js-bxslider-thumb'),
-    $main: $('.js-bxslider-main'),
+    $thumb: $('#sliderThumb'),
+    $main: $('#sliderMain'),
     thumbSlideCount: null,
     mainSlideCount: null,
     triggerPrevValues: null,
@@ -40,7 +40,7 @@ ACC.slider = {
             pager: false
         },
         "main":{
-            pagerCustom: '.js-bxslider-thumb',
+            pagerCustom: '#sliderThumb',
             onSlideBefore: function($slideElement, oldIndex, newIndex){
                 ACC.slider.newIndex = newIndex;
             },
@@ -67,8 +67,8 @@ ACC.slider = {
     init: function(){
         ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
 
-        this.sliderThumb = $('.js-bxslider-thumb').bxSlider(this.sliderConfig.thumb);
-        this.sliderMain = $('.js-bxslider-main').bxSlider(this.sliderConfig.main);
+        this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+        this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
 
         this.hoverIntent();
         this.handlePrevNextControls();
@@ -105,17 +105,6 @@ ACC.slider = {
         this.triggerPrevValues = triggerPrevValues;
     },
 
-    getViewportHeight: function(){
-        var viewportHeight = $(window).height();
-    },
-
-    onWindowResize: function(){
-        $(window).on('resize', function(){
-            var viewportHeight = $(window).height();
-            console.log(viewportHeight);
-        });
-    },
-
     handleModal: function(){
         $('#zoomModal').on('shown.bs.modal', function(){
             $('#triggerModal').hide();
@@ -144,6 +133,17 @@ ACC.slider = {
         var evt = window.document.createEvent('UIEvents');
         evt.initUIEvent('resize', true, false, window, 0);
         window.dispatchEvent(evt);
+    },
+
+    getViewportHeight: function(){
+        var viewportHeight = $(window).height();
+    },
+
+    onWindowResize: function(){
+        $(window).on('resize', function(){
+            var viewportHeight = $(window).height();
+            console.log(viewportHeight);
+        });
     },
 
     debugInfo: function(){
