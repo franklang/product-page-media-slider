@@ -37,6 +37,7 @@ ACC.slider = {
             infiniteLoop: false,
             hideControlOnEnd: true,
             pager: false
+           // ,startSlide: 0
         },
         "main":{
             pagerCustom: '#sliderThumb',
@@ -110,7 +111,10 @@ ACC.slider = {
             $('#sliders').appendTo('#modalSliders');
 
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbModalMinSlides;
+
             // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
+            // console.log('startSlide (modal): ' + ACC.slider.sliderConfig.thumb.startSlide)
+            // console.log(ACC.slider.sliderConfig.thumb);
 
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
@@ -121,7 +125,10 @@ ACC.slider = {
             $('#sliders').appendTo('#pageSliders');
 
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
+
             // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
+            // console.log('startSlide (page): ' + ACC.slider.sliderConfig.thumb.startSlide)
+            // console.log(ACC.slider.sliderConfig.thumb);
 
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
