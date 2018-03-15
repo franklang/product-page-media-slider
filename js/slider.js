@@ -110,6 +110,8 @@ ACC.slider = {
             $('#sliders').appendTo('#modalSliders');
 
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbModalMinSlides;
+            // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
+
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
 
@@ -120,6 +122,7 @@ ACC.slider = {
 
             ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
             // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
+
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.handlePrevNextControls();
 
@@ -160,7 +163,7 @@ ACC.slider = {
       $('#newIndex').text(+this.newIndex);
       $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
       $('#triggerNextValues').text(ACC.slider.triggerNextValues);
-      $(document).on('click', function(e) {
+      $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
           $('#newIndex').text(ACC.slider.newIndex);
       });
       $('#zoomModal').on('shown.bs.modal', function(){
