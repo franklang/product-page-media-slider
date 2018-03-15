@@ -120,6 +120,7 @@ ACC.slider = {
 
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
             ACC.slider.sliderThumb.goToSlide(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+
             console.log('closest value out of array: ' + ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues));
             console.log('index of that value in array: ' + ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
 
@@ -142,7 +143,7 @@ ACC.slider = {
     },
 
     arrayFindIndex: function(elem){
-      return elem == ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues);
+       return elem == ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues);
     },
 
     triggerWindowResizeEvent: function(){
