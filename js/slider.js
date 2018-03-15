@@ -151,18 +151,26 @@ ACC.slider = {
           +'    <li>Slides in main slider: <strong id="mainSlideCount"></strong></li>'
           +'    <li>Slides in thumb slider: <strong id="thumbSlideCount"></strong></li>'
           +'    <li>Active slide: <strong id="newIndex"></strong></li>'
+          +'    <li>Trigger previous Thumb slider slide when active value is: <strong id="triggerPrevValues"></strong></li>'
+          +'    <li>Trigger next Thumb slider slide when active value is: <strong id="triggerNextValues"></strong></li>'
           +'</ul>');
 
       $('#mainSlideCount').text(this.mainSlideCount);
       $('#thumbSlideCount').text(this.thumbSlideCount);
       $('#newIndex').text(+this.newIndex);
+      $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
+      $('#triggerNextValues').text(ACC.slider.triggerNextValues);
       $(document).on('click', function(e) {
           $('#newIndex').text(ACC.slider.newIndex);
       });
       $('#zoomModal').on('shown.bs.modal', function(){
           $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
+          $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
+          $('#triggerNextValues').text(ACC.slider.triggerNextValues);
       }).on('hidden.bs.modal', function(){
           $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
+          $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
+          $('#triggerNextValues').text(ACC.slider.triggerNextValues);
       });
     }
 };
