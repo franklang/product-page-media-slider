@@ -57,8 +57,8 @@ ACC.slider = {
                     ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
                 }
                 else if(newIndex == ACC.slider.mainSlideCount -1){
-                  ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.thumbSlideCount -1;
-                  ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
+                    ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.thumbSlideCount -1;
+                    ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
                 }
             }
         }
@@ -96,11 +96,14 @@ ACC.slider = {
         for (var i = 0; i < triggerNextValues.length; i++) {
           triggerNextValues[i] *= this.sliderConfig.thumb.minSlides;
         }
+
         var triggerPrevValues = triggerNextValues.map(function(value){
             return value -1;
         });
-        triggerPrevValues[0] = 0;
+
         triggerNextValues.splice(0, 1);
+        triggerPrevValues[0] = 0;
+
         this.triggerNextValues = triggerNextValues;
         this.triggerPrevValues = triggerPrevValues;
     },
@@ -152,8 +155,8 @@ ACC.slider = {
       $('body').append('<div id="debugInfo" />');
       $('#debugInfo').append(
            '<ul>'
-          +'    <li>Slides in main slider: <strong id="mainSlideCount"></strong></li>'
-          +'    <li>Slides in thumb slider: <strong id="thumbSlideCount"></strong></li>'
+          +'    <li>Slides in main slider: <strong id="mainSlideCount"></strong> <small>(incl. 0)</small></li>'
+          +'    <li>Slides in thumb slider: <strong id="thumbSlideCount"></strong> <small>(incl. 0)</small></li>'
           +'    <li>Active image: <strong id="newIndex"></strong></li>'
           +'    <li>Active slide in main slider: <strong id="activeSlideInMainSlider"></strong></li>'
           +'    <li>Active slide in thumb slider: <strong id="activeSlideInThumbSlider"></strong></li>'
@@ -161,7 +164,7 @@ ACC.slider = {
           +'    <li>Trigger next Thumb slider slide when active value is: <strong id="triggerNextValues"></strong></li>'
           +'</ul>');
 
-      $('#mainSlideCount').text(this.mainSlideCount);
+      $('#mainSlideCount, #mainSlideCount2').text(this.mainSlideCount);
       $('#thumbSlideCount').text(this.thumbSlideCount);
       $('#newIndex, #activeSlideInMainSlider').text(+this.newIndex);
       $('#activeSlideInThumbSlider').text(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
