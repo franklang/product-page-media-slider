@@ -21,8 +21,10 @@ ACC.slider = {
     $main: $('#sliderMain'),
     thumbSlideCount: null,
     mainSlideCount: null,
+    activeSlideInThumbSlider: null,
     triggerPrevValues: null,
     triggerNextValues: null,
+    thumbSlideTrigger: null,
     sliderThumb: null,
         sliderThumbMinSlides: 6,
         sliderThumbModalMinSlides: 6,
@@ -78,6 +80,8 @@ ACC.slider = {
     onMouseOverThumb: function(){
         this.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
         $(this).children('a').click();
+
+        ACC.slider.checkForActiveSlideInThumbSlider();
     },
 
     hoverIntent: function(){
@@ -96,15 +100,19 @@ ACC.slider = {
         for (var i = 0; i < triggerNextValues.length; i++) {
           triggerNextValues[i] *= this.sliderConfig.thumb.minSlides;
         }
+        triggerNextValues.splice(0, 1);
+        this.triggerNextValues = triggerNextValues;
+
+        var thumbSlideTrigger = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
+        for (var i = 0; i < thumbSlideTrigger.length; i++) {
+          thumbSlideTrigger[i] *= this.sliderConfig.thumb.minSlides;
+        }
+        this.thumbSlideTrigger = thumbSlideTrigger;
 
         var triggerPrevValues = triggerNextValues.map(function(value){
             return value -1;
         });
-
-        triggerNextValues.splice(0, 1);
         triggerPrevValues[0] = 0;
-
-        this.triggerNextValues = triggerNextValues;
         this.triggerPrevValues = triggerPrevValues;
     },
 
@@ -119,32 +127,42 @@ ACC.slider = {
             $('#sliders').appendTo('#pageSliders');
 
             ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
-            ACC.slider.sliderThumb.goToSlide(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+            // ACC.slider.sliderThumb.goToSlide(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
 
-            console.log('closest value out of array: ' + ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues));
-            console.log('index of that value in array: ' + ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+            // console.log('closest value out of array: ' + ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues));
+            // console.log('index of that value in array: ' + ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
 
             ACC.slider.triggerWindowResizeEvent();
         });
     },
 
-    getClosestNumberOutOfArray: function(num, arr){
-        // https://stackoverflow.com/questions/8584902/get-closest-number-out-of-array
-        var curr = arr[0];
-        var diff = Math.abs (num - curr);
-        for (var val = 0; val < arr.length; val++) {
-            var newdiff = Math.abs (num - arr[val]);
-            if (newdiff < diff) {
-                diff = newdiff;
-                curr = arr[val];
-            }
-        }
-        return curr;
+    checkForActiveSlideInThumbSlider: function(){
+        // https://stackoverflow.com/questions/3775598/logic-for-checking-in-between-two-numbers
+        var i; var y = 0; var val = ACC.slider.newIndex; var zones = ACC.slider.thumbSlideTrigger;
+        for (i = 0; i < zones.length; i++)
+            if (val >= zones[i])
+                y = i;
+                ACC.slider.activeSlideInThumbSlider = y;
+        console.log('image ' + val + ' is in slide ' + y);
     },
 
-    arrayFindIndex: function(elem){
-       return elem == ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues);
-    },
+    // getClosestNumberOutOfArray: function(num, arr){
+    //     // https://stackoverflow.com/questions/8584902/get-closest-number-out-of-array
+    //     var curr = arr[0];
+    //     var diff = Math.abs (num - curr);
+    //     for (var val = 0; val < arr.length; val++) {
+    //         var newdiff = Math.abs (num - arr[val]);
+    //         if (newdiff < diff) {
+    //             diff = newdiff;
+    //             curr = arr[val];
+    //         }
+    //     }
+    //     return curr;
+    // },
+
+    // arrayFindIndex: function(elem){
+    //    return elem == ACC.slider.getClosestNumberOutOfArray(ACC.slider.newIndex -1, ACC.slider.triggerPrevValues);
+    // },
 
     triggerWindowResizeEvent: function(){
         var evt = window.document.createEvent('UIEvents');
@@ -163,17 +181,22 @@ ACC.slider = {
           +'    <li>Active slide in thumb slider: <strong id="activeSlideInThumbSlider"></strong></li>'
           +'    <li>Trigger previous Thumb slider slide when active value is: <strong id="triggerPrevValues"></strong></li>'
           +'    <li>Trigger next Thumb slider slide when active value is: <strong id="triggerNextValues"></strong></li>'
+          +'    <li>hover: <strong id="hover"></strong></li>'
           +'</ul>');
 
       $('#mainSlideCount, #mainSlideCount2').text(this.mainSlideCount);
       $('#thumbSlideCount').text(this.thumbSlideCount);
       $('#newIndex, #activeSlideInMainSlider').text(+this.newIndex);
-      $('#activeSlideInThumbSlider').text(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+      $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
       $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
       $('#triggerNextValues').text(ACC.slider.triggerNextValues);
+      $('#hover').text(ACC.slider.thumbSlideTrigger);
       $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
           $('#newIndex, #activeSlideInMainSlider').text(ACC.slider.newIndex);
-          $('#activeSlideInThumbSlider').text(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+          $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
+      });
+      $(document).on('mouseover', '#sliderThumb li', function(e) {
+          $('#hover').text(ACC.slider.thumbSlideTrigger);
       });
       $('#zoomModal').on('shown.bs.modal', function(){
           $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
@@ -181,7 +204,7 @@ ACC.slider = {
           $('#triggerNextValues').text(ACC.slider.triggerNextValues);
       }).on('hidden.bs.modal', function(){
           $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
-          $('#activeSlideInThumbSlider').text(ACC.slider.triggerPrevValues.findIndex(ACC.slider.arrayFindIndex));
+          $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
           $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
           $('#triggerNextValues').text(ACC.slider.triggerNextValues);
       });
