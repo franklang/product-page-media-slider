@@ -26,8 +26,6 @@ ACC.slider = {
     thumbSlideCount: null,
     mainSlideCount: null,
     activeSlideInThumbSlider: null,
-    triggerPrevValues: null,
-    triggerNextValues: null,
     thumbSlideTriggerValues: null,
 
     sliderConfig:{
@@ -47,11 +45,11 @@ ACC.slider = {
                 ACC.slider.newIndex = newIndex;
             },
             onSlideNext: function($slideElement, oldIndex, newIndex){
-                ACC.slider.checkForActiveSlideInThumbSlider();
+                ACC.slider.getActiveSlideInThumbSlider();
                 ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
             },
             onSlidePrev: function($slideElement, oldIndex, newIndex){
-                ACC.slider.checkForActiveSlideInThumbSlider();
+                ACC.slider.getActiveSlideInThumbSlider();
                 ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
             }
         }
@@ -64,16 +62,16 @@ ACC.slider = {
         this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
 
         this.hoverIntent();
-        this.handlePrevNextControls();
+        this.handleSlideChanges();
+        this.getActiveSlideInThumbSlider();
         this.handleModal();
-        this.checkForActiveSlideInThumbSlider();
     },
 
     onMouseOverThumb: function(){
         this.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
         $(this).children('a').click();
 
-        ACC.slider.checkForActiveSlideInThumbSlider();
+        ACC.slider.getActiveSlideInThumbSlider();
     },
 
     hoverIntent: function(){
@@ -84,7 +82,7 @@ ACC.slider = {
         });
     },
 
-    handlePrevNextControls: function(){
+    handleSlideChanges: function(){
         this.mainSlideCount = this.sliderMain.getSlideCount();
         this.thumbSlideCount = Math.ceil(this.mainSlideCount / this.sliderConfig.thumb.minSlides);
 
@@ -110,8 +108,7 @@ ACC.slider = {
         });
     },
 
-    checkForActiveSlideInThumbSlider: function(){
-        // https://stackoverflow.com/questions/3775598/logic-for-checking-in-between-two-numbers
+    getActiveSlideInThumbSlider: function(){
         var i; var y = 0; var val = ACC.slider.newIndex; var zones = ACC.slider.thumbSlideTriggerValues;
         for (i = 0; i < zones.length; i++){
             if (val >= zones[i]){
@@ -137,20 +134,20 @@ ACC.slider = {
           +'    <li>Active image: <strong id="newIndex"></strong></li>'
           +'    <li>Active slide in main slider: <strong id="activeSlideInMainSlider"></strong></li>'
           +'    <li>Active slide in thumb slider: <strong id="activeSlideInThumbSlider"></strong></li>'
-          +'    <li>Images that trigger a slide change in Thumb slider: <strong id="hover"></strong></li>'
+          +'    <li>Images that trigger a slide change in Thumb slider: <strong id="imagesThatTriggerASlideChangeInThumbSlider"></strong></li>'
           +'</ul>');
 
       $('#mainSlideCount, #mainSlideCount2').text(this.mainSlideCount);
       $('#thumbSlideCount').text(this.thumbSlideCount);
       $('#newIndex, #activeSlideInMainSlider').text(+this.newIndex);
       $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
-      $('#hover').text(ACC.slider.thumbSlideTriggerValues);
+      $('#imagesThatTriggerASlideChangeInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
       $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
           $('#newIndex, #activeSlideInMainSlider').text(ACC.slider.newIndex);
           $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
       });
       $(document).on('mouseover', '#sliderThumb li', function(e) {
-          $('#hover').text(ACC.slider.thumbSlideTriggerValues);
+          $('#imagesThatTriggerASlideChangeInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
       });
       $('#zoomModal').on('shown.bs.modal', function(){
           $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
