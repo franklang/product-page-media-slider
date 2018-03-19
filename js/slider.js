@@ -12,8 +12,6 @@ ACC.slider = {
 
   _autoload: [
     ["init", $(".bxslider").length > 0]
-   // Uncomment line below to show debug info
-   // ,["debugInfo", $(".bxslider").length > 0]
   ],
 
   newIndex: null,

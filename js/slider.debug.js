@@ -1,4 +1,9 @@
-ACC.slider = {
+ACC.sliderDebug = {
+
+  _autoload: [
+    ["debugInfo", $(".bxslider").length > 0]
+  ],
+
   debugInfo: function(){
     $('body').append('<div id="debugInfo" />');
     $('#debugInfo').append(
@@ -11,9 +16,9 @@ ACC.slider = {
       +'  <li>First image of each slide in thumb slider: <strong id="firstImageOfEachSlideInThumbSlider"></strong></li>'
       +'</ul>');
 
-    $('#mainSlideCount, #mainSlideCount2').text(this.mainSlideCount);
-    $('#thumbSlideCount').text(this.thumbSlideCount);
-    $('#newIndex, #activeSlideInMainSlider').text(+this.newIndex);
+    $('#mainSlideCount, #mainSlideCount2').text(ACC.slider.mainSlideCount);
+    $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
+    $('#newIndex, #activeSlideInMainSlider').text(+ACC.slider.newIndex);
     $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
     $('#firstImageOfEachSlideInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
     $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
