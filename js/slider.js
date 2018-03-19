@@ -44,6 +44,11 @@ ACC.slider = {
       pagerCustom: '#sliderThumb',
       onSlideBefore: function($slideElement, oldIndex, newIndex){
         ACC.slider.newIndex = newIndex;
+
+        // Lazy load
+        var $lazy = $slideElement.find('.lazy')
+        var $load = $lazy.attr('data-src');
+        $lazy.attr('src', $load).removeClass('lazy');
       },
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
