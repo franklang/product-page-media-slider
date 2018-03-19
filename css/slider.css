@@ -4,24 +4,6 @@
   left: 0;
 }
 
-.page .thumb-pager,
-.page .main-slider,
-.modal .thumb-pager,
-.modal .main-slider {
-  float: left;
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.thumb-pager {
-  width: 16.66666667%; /* .col-md-2 */
-}
-.main-slider {
-  width: 83.33333333%; /* .col-md-10 */
-}
-
 .bxslider-thumb {
   padding: 0;
 }
