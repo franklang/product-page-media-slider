@@ -10,6 +10,4 @@ A product page media slider based on jQuery v2.2.4, Bootstrap v3.2.0 and bxSlide
 * Not working properly if sliderThumbMinSlides and sliderThumbModalMinSlides values are set to a different number
 
 ## TODO:
-* Cache appended markup
-* Implement Lazy Load
 * Add video support
