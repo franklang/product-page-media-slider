@@ -9,17 +9,24 @@
 }
 
 .bxslider-thumb li {
-  width: 72px !important; /* thumb image width + thumb image border width */
+  /* thumb image width + thumb image border width */
+  /* width: 72px !important; */
 }
 .bxslider-thumb a {
+  position: relative;
   display: block;
-  border-size: 1px;
-  border-style: solid;
-  border-color: transparent;
 }
-.bxslider-thumb a:hover,
-.bxslider-thumb a.active {
-  border-color: tomato;
+.bxslider-thumb a:after {
+  content: '';
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  box-shadow:inset 0px 0px 0px 2px transparent;
+}
+.bxslider-thumb a:hover:after,
+.bxslider-thumb a.active:after {
+  box-shadow:inset 0px 0px 0px 2px tomato;
 }
 
 .modal-header {

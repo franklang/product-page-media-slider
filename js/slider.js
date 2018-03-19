@@ -11,7 +11,9 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
   _autoload: [
-    ["init", $(".bxslider").length > 0]
+    ["init", $(".bxslider").length > 0],
+    "getSliderMainHeight",
+    "setSliderThumbHeight"
   ],
 
   newIndex: null,
@@ -22,6 +24,7 @@ ACC.slider = {
     // Currently not implemented
     // sliderThumbModalMinSlides: 6,
   sliderMain: null,
+    sliderMainHeight: null,
   thumbSlideCount: null,
   mainSlideCount: null,
   activeSlideInThumbSlider: null,
@@ -127,5 +130,27 @@ ACC.slider = {
     var evt = window.document.createEvent('UIEvents');
     evt.initUIEvent('resize', true, false, window, 0);
     window.dispatchEvent(evt);
+  },
+
+  getSliderMainHeight: function(){
+    ACC.slider.sliderMainHeight = $('#sliderMain').closest('.bx-viewport').height();
+    console.log(ACC.slider.sliderMainHeight);
+  },
+
+  setSliderThumbHeight: function(){
+    var slideMarginCumulatedHeight = (ACC.slider.sliderThumbMinSlides - 1) * ACC.slider.sliderConfig.thumb.slideMargin;
+    var heightWithoutMargins = ACC.slider.sliderMainHeight - slideMarginCumulatedHeight;
+    var singleImageWidth = heightWithoutMargins / ACC.slider.sliderThumbMinSlides;
+
+    this.$thumb.closest('.bx-viewport').height(ACC.slider.sliderMainHeight);
+    this.$thumb.children('li').width(singleImageWidth);
+
+    // console.log('slideMarginCumulatedHeight: ' + slideMarginCumulatedHeight);
+    // console.log('singleImageWidth: ' + singleImageWidth);
+  },
+
+  onWindowResize: function(){
+    this.getSliderMainHeight();
+    this.setSliderThumbHeight();
   }
 };
