@@ -10,177 +10,122 @@ var ACC = ACC || {}; // make sure ACC is available
 
 ACC.slider = {
 
-    _autoload: [
-        ["init", $(".bxslider").length > 0]
-       // Uncomment line below to show debug info
-       ,["debugInfo", $(".bxslider").length > 0]
-    ],
+  _autoload: [
+    ["init", $(".bxslider").length > 0]
+  ],
 
-    newIndex: null,
-    $thumb: $('#sliderThumb'),
-    $main: $('#sliderMain'),
-    thumbSlideCount: null,
-    mainSlideCount: null,
-    triggerPrevValues: null,
-    triggerNextValues: null,
-    sliderThumb: null,
-        sliderThumbMinSlides: 6,
-        sliderThumbModalMinSlides: 9,
-    sliderMain: null,
+  newIndex: null,
+  $thumb: $('#sliderThumb'),
+  $main: $('#sliderMain'),
+  sliderThumb: null,
+    sliderThumbMinSlides: 6,
+    // Currently not implemented
+    // sliderThumbModalMinSlides: 6,
+  sliderMain: null,
+  thumbSlideCount: null,
+  mainSlideCount: null,
+  activeSlideInThumbSlider: null,
+  thumbSlideTriggerValues: null,
 
-    sliderConfig:{
-        "thumb":{
-            mode: 'vertical',
-            slideWidth: 300,
-            minSlides: 0,
-            slideMargin: 10,
-            infiniteLoop: false,
-            hideControlOnEnd: true,
-            pager: false
-           // ,startSlide: 0
-        },
-        "main":{
-            pagerCustom: '#sliderThumb',
-            onSlideBefore: function($slideElement, oldIndex, newIndex){
-                ACC.slider.newIndex = newIndex;
-            },
-            onSlideNext: function($slideElement, oldIndex, newIndex){
-                if(ACC.slider.triggerNextValues.indexOf(newIndex) !== -1){
-                    ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-next').click();
-                }
-                else if(newIndex == 0){
-                  ACC.slider.sliderThumb.goToSlide(0);
-                }
-            },
-            onSlidePrev: function($slideElement, oldIndex, newIndex){
-                if(ACC.slider.triggerPrevValues.indexOf(newIndex) !== -1){
-                    ACC.slider.$thumb.closest('.bx-wrapper').children('.bx-controls').find('.bx-prev').click();
-                }
-                else if(newIndex == ACC.slider.mainSlideCount -1){
-                  ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.thumbSlideCount -1;
-                  ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
-                }
-            }
-        }
+  sliderConfig:{
+    "thumb":{
+      mode: 'vertical',
+      slideWidth: 300,
+      minSlides: 0,
+      slideMargin: 10,
+      infiniteLoop: false,
+      hideControlOnEnd: true,
+      pager: false,
+      startSlide: 0
     },
+    "main":{
+      pagerCustom: '#sliderThumb',
+      onSlideBefore: function($slideElement, oldIndex, newIndex){
+        ACC.slider.newIndex = newIndex;
 
-    init: function(){
-        ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
-
-        this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
-        this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
-
-        this.hoverIntent();
-        this.handlePrevNextControls();
-        this.handleModal();
-    },
-
-    onMouseOverThumb: function(){
-        this.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
-        $(this).children('a').click();
-    },
-
-    hoverIntent: function(){
-        this.$thumb.hoverIntent({
-            over: this.onMouseOverThumb,
-            selector: 'li',
-            sensivity: 12
-        });
-    },
-
-    handlePrevNextControls: function(){
-        this.mainSlideCount = this.sliderMain.getSlideCount();
-        this.thumbSlideCount = Math.ceil(this.mainSlideCount / this.sliderConfig.thumb.minSlides);
-
-        var triggerNextValues = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
-        for (var i = 0; i < triggerNextValues.length; i++) {
-          triggerNextValues[i] *= this.sliderConfig.thumb.minSlides;
-        }
-        var triggerPrevValues = triggerNextValues.map(function(value){
-            return value -1;
-        });
-        triggerPrevValues[0] = 0;
-        triggerNextValues.splice(0, 1);
-        this.triggerNextValues = triggerNextValues;
-        this.triggerPrevValues = triggerPrevValues;
-    },
-
-    handleModal: function(){
-        $('#zoomModal').on('shown.bs.modal', function(){
-            $('#triggerModal').hide();
-            $('#sliders').appendTo('#modalSliders');
-
-            ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbModalMinSlides;
-
-            // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
-            // console.log('startSlide (modal): ' + ACC.slider.sliderConfig.thumb.startSlide)
-            // console.log(ACC.slider.sliderConfig.thumb);
-
-            ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
-            ACC.slider.handlePrevNextControls();
-
-            ACC.slider.triggerWindowResizeEvent();
-        }).on('hidden.bs.modal', function(){
-            $('#triggerModal').show();
-            $('#sliders').appendTo('#pageSliders');
-
-            ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
-
-            // ACC.slider.sliderConfig.thumb.startSlide = ACC.slider.newIndex;
-            // console.log('startSlide (page): ' + ACC.slider.sliderConfig.thumb.startSlide)
-            // console.log(ACC.slider.sliderConfig.thumb);
-
-            ACC.slider.sliderThumb.reloadSlider(ACC.slider.sliderConfig.thumb);
-            ACC.slider.handlePrevNextControls();
-
-            ACC.slider.triggerWindowResizeEvent();
-        });
-    },
-
-    triggerWindowResizeEvent: function(){
-        var evt = window.document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, window, 0);
-        window.dispatchEvent(evt);
-    },
-
-    // getViewportHeight: function(){
-    //     var viewportHeight = $(window).height();
-    // },
-
-    // onWindowResize: function(){
-    //     $(window).on('resize', function(){
-    //         var viewportHeight = $(window).height();
-    //         console.log(viewportHeight);
-    //     });
-    // },
-
-    debugInfo: function(){
-      $('body').append('<div id="debugInfo" />');
-      $('#debugInfo').append(
-           '<ul>'
-          +'    <li>Slides in main slider: <strong id="mainSlideCount"></strong></li>'
-          +'    <li>Slides in thumb slider: <strong id="thumbSlideCount"></strong></li>'
-          +'    <li>Active slide: <strong id="newIndex"></strong></li>'
-          +'    <li>Trigger previous Thumb slider slide when active value is: <strong id="triggerPrevValues"></strong></li>'
-          +'    <li>Trigger next Thumb slider slide when active value is: <strong id="triggerNextValues"></strong></li>'
-          +'</ul>');
-
-      $('#mainSlideCount').text(this.mainSlideCount);
-      $('#thumbSlideCount').text(this.thumbSlideCount);
-      $('#newIndex').text(+this.newIndex);
-      $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
-      $('#triggerNextValues').text(ACC.slider.triggerNextValues);
-      $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
-          $('#newIndex').text(ACC.slider.newIndex);
-      });
-      $('#zoomModal').on('shown.bs.modal', function(){
-          $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
-          $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
-          $('#triggerNextValues').text(ACC.slider.triggerNextValues);
-      }).on('hidden.bs.modal', function(){
-          $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
-          $('#triggerPrevValues').text(ACC.slider.triggerPrevValues);
-          $('#triggerNextValues').text(ACC.slider.triggerNextValues);
-      });
+        // Lazy load
+        var $lazy = $slideElement.find('.lazy')
+        var $load = $lazy.attr('data-src');
+        $lazy.attr('src', $load).removeClass('lazy');
+      },
+      onSlideNext: function($slideElement, oldIndex, newIndex){
+        ACC.slider.getActiveSlideInThumbSlider();
+        ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+      },
+      onSlidePrev: function($slideElement, oldIndex, newIndex){
+        ACC.slider.getActiveSlideInThumbSlider();
+        ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+      }
     }
+  },
+
+  init: function(){
+    ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
+
+    this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+    this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
+
+    this.hoverIntent();
+    this.handleSlideChanges();
+    this.getActiveSlideInThumbSlider();
+    this.handleModal();
+  },
+
+  onMouseOverThumb: function(){
+    this.newIndex = $($(this).find('a')[0]).attr('data-slide-index');
+    $(this).children('a').click();
+
+    ACC.slider.getActiveSlideInThumbSlider();
+  },
+
+  hoverIntent: function(){
+    this.$thumb.hoverIntent({
+      over: this.onMouseOverThumb,
+      selector: 'li',
+      sensivity: 12
+    });
+  },
+
+  handleSlideChanges: function(){
+    this.mainSlideCount = this.sliderMain.getSlideCount();
+    this.thumbSlideCount = Math.ceil(this.mainSlideCount / this.sliderConfig.thumb.minSlides);
+
+    var thumbSlideTriggerValues = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
+    for (var i = 0; i < thumbSlideTriggerValues.length; i++) {
+      thumbSlideTriggerValues[i] *= this.sliderConfig.thumb.minSlides;
+    }
+    this.thumbSlideTriggerValues = thumbSlideTriggerValues;
+  },
+
+  handleModal: function(){
+    $('#zoomModal').on('shown.bs.modal', function(){
+      $('#triggerModal').hide();
+      $('#sliders').appendTo('#modalSliders');
+
+      ACC.slider.triggerWindowResizeEvent();
+    }).on('hidden.bs.modal', function(){
+      $('#triggerModal').show();
+      $('#sliders').appendTo('#pageSliders');
+
+      ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+      ACC.slider.triggerWindowResizeEvent();
+    });
+  },
+
+  getActiveSlideInThumbSlider: function(){
+    var i; var y = 0; var val = ACC.slider.newIndex; var zones = ACC.slider.thumbSlideTriggerValues;
+    for (i = 0; i < zones.length; i++){
+      if (val >= zones[i]){
+        y = i;
+      }
+    }
+
+    ACC.slider.activeSlideInThumbSlider = y;
+  },
+
+  triggerWindowResizeEvent: function(){
+    var evt = window.document.createEvent('UIEvents');
+    evt.initUIEvent('resize', true, false, window, 0);
+    window.dispatchEvent(evt);
+  }
 };
