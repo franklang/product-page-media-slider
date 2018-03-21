@@ -18,11 +18,11 @@ ACC.sliderDebug = {
 
     $('#mainSlideCount, #mainSlideCount2').text(ACC.slider.mainSlideCount);
     $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
-    $('#newIndex, #activeSlideInMainSlider').text(+ACC.slider.newIndex);
+    $('#newIndex, #activeSlideInMainSlider').text(+ACC.slider.activeSlideInMainSlider);
     $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
     $('#firstImageOfEachSlideInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
     $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
-      $('#newIndex, #activeSlideInMainSlider').text(ACC.slider.newIndex);
+      $('#newIndex, #activeSlideInMainSlider').text(ACC.slider.activeSlideInMainSlider);
       $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
     });
     $(document).on('mouseover', '#sliderThumb li', function(e) {

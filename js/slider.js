@@ -14,7 +14,12 @@ ACC.slider = {
     ["test", $("#sliders").length != 0]
   ],
 
-  newIndex: null,
+  $thumbSlideElement: null,
+  thumbOldIndex: null,
+  thumbNewIndex: 0,
+  mainOldIndex: null,
+  mainNewIndex: 0,
+
   $thumb: $('#sliderThumb'),
   $main: $('#sliderMain'),
   $thumbZoom: $('#sliderThumbZoom'),
@@ -27,7 +32,8 @@ ACC.slider = {
   activeSliderThumb: null,
   thumbSlideCount: null,
   mainSlideCount: null,
-  activeSlideInThumbSlider: null,
+  activeSlideInThumbSlider: 0,
+  activeSlideInMainSlider: 0,
   thumbSlideTriggerValues: null,
 
   sliderConfig:{
@@ -43,10 +49,30 @@ ACC.slider = {
       pager: false,
       startSlide: 0,
       onSlideNext: function($slideElement, oldIndex, newIndex){
+        ACC.slider.$thumbSlideElement = $slideElement;
+        ACC.slider.thumbOldIndex = oldIndex;
+        ACC.slider.thumbNewIndex = newIndex;
+
         ACC.slider.activeSlideInThumbSlider = newIndex;
+
+        console.log('_thumb_ onSlideNext:');
+        console.log('ACC.slider.thumbOldIndex: '+ACC.slider.thumbOldIndex);
+        console.log('ACC.slider.thumbNewIndex: '+ACC.slider.thumbNewIndex);
+        console.log('ACC.slider.activeSlideInThumbSlider: '+ACC.slider.activeSlideInThumbSlider);
+        console.log('ACC.slider.activeSlideInMainSlider: '+ACC.slider.activeSlideInMainSlider);
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
+        ACC.slider.$thumbSlideElement = $slideElement;
+        ACC.slider.thumbOldIndex = oldIndex;
+        ACC.slider.thumbNewIndex = newIndex;
+
         ACC.slider.activeSlideInThumbSlider = newIndex;
+
+        console.log('_thumb_ onSlidePrev:');
+        console.log('ACC.slider.thumbOldIndex: '+ACC.slider.thumbOldIndex);
+        console.log('ACC.slider.thumbNewIndex: '+ACC.slider.thumbNewIndex);
+        console.log('ACC.slider.activeSlideInThumbSlider: '+ACC.slider.activeSlideInThumbSlider);
+        console.log('ACC.slider.activeSlideInMainSlider: '+ACC.slider.activeSlideInMainSlider);
       }
     },
     "main":{
@@ -54,7 +80,7 @@ ACC.slider = {
       prevText: '',
       pagerCustom: '#sliderThumb',
       onSlideBefore: function($slideElement, oldIndex, newIndex){
-        ACC.slider.newIndex = newIndex;
+        ACC.slider.activeSlideInMainSlider = newIndex;
 
         // Lazy load
         var $lazy = $slideElement.find('.lazy')
@@ -64,10 +90,22 @@ ACC.slider = {
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+
+        console.log('_main_ onSlideNext:');
+        console.log('ACC.slider.thumbOldIndex: '+ACC.slider.thumbOldIndex);
+        console.log('ACC.slider.thumbNewIndex: '+ACC.slider.thumbNewIndex);
+        console.log('ACC.slider.activeSlideInThumbSlider: '+ACC.slider.activeSlideInThumbSlider);
+        console.log('ACC.slider.activeSlideInMainSlider: '+ACC.slider.activeSlideInMainSlider);
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+
+        console.log('_main_ onSlidePrev:');
+        console.log('ACC.slider.thumbOldIndex: '+ACC.slider.thumbOldIndex);
+        console.log('ACC.slider.thumbNewIndex: '+ACC.slider.thumbNewIndex);
+        console.log('ACC.slider.activeSlideInThumbSlider: '+ACC.slider.activeSlideInThumbSlider);
+        console.log('ACC.slider.activeSlideInMainSlider: '+ACC.slider.activeSlideInMainSlider);
       }
     }
   },
@@ -127,10 +165,6 @@ ACC.slider = {
       thumbSlideTriggerValues[i] *= this.sliderConfig.thumb.minSlides;
     }
     this.thumbSlideTriggerValues = thumbSlideTriggerValues;
-
-    // $('a', '.bxslider-thumb').on('click', function(){
-    //   ACC.slider.activeSlideInThumbSlider = $(this).attr('data-slide-index');
-    // });
   },
 
   handleModal: function(){
@@ -145,7 +179,7 @@ ACC.slider = {
         ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
 
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.newIndex+')').children('a').click();
+        ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.activeSlideInMainSlider+')').children('a').click();
 
         ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
       }
@@ -159,7 +193,7 @@ ACC.slider = {
         ACC.slider.sliderThumb = ACC.slider.$thumb.bxSlider(ACC.slider.sliderConfig.thumb);
 
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        ACC.slider.$thumb.find('li:eq('+ACC.slider.newIndex+')').children('a').click();
+        ACC.slider.$thumb.find('li:eq('+ACC.slider.activeSlideInMainSlider+')').children('a').click();
       }
 
       ACC.slider.triggerWindowResizeEvent();
@@ -167,7 +201,7 @@ ACC.slider = {
   },
 
   getActiveSlideInThumbSlider: function(){
-    var i; var y = 0; var val = ACC.slider.newIndex; var zones = ACC.slider.thumbSlideTriggerValues;
+    var i; var y = 0; var val = ACC.slider.activeSlideInMainSlider; var zones = ACC.slider.thumbSlideTriggerValues;
     for (i = 0; i < zones.length; i++){
       if (val >= zones[i]){
         y = i;
