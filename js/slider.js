@@ -136,15 +136,13 @@ ACC.slider = {
   handleModal: function(){
     var $pageSlidersControls = $('.bx-controls', '#pageSliders');
 
-    $('#zoomModal').one('shown.bs.modal', function(){
+    $('#zoomModal').on('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
+        $pageSlidersControls.hide();
+
         ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
         ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
         ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
-      }
-    }).on('shown.bs.modal', function(){
-      if(ACC.slider.mainSlideCount > 1){
-        $pageSlidersControls.hide();
 
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
         ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.newIndex+')').children('a').click();
