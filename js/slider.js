@@ -11,7 +11,7 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
   _autoload: [
-    ["test", $("#sliders").length > 0]
+    ["test", $("#sliders").length != 0]
   ],
 
   newIndex: null,
@@ -24,6 +24,7 @@ ACC.slider = {
     // Currently not implemented
     // sliderThumbModalMinSlides: 6,
   sliderMain: null,
+  activeSliderThumb: null,
   thumbSlideCount: null,
   mainSlideCount: null,
   activeSlideInThumbSlider: null,
@@ -57,10 +58,12 @@ ACC.slider = {
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+        // ACC.slider.activeSliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+        // ACC.slider.activeSliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
       }
     }
   },
@@ -83,9 +86,11 @@ ACC.slider = {
     if(ACC.slider.mainSlideCount <= ACC.slider.sliderThumbMinSlides){
       this.sliderConfig.thumb.controls = false;
       this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+      // this.activeSliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
     }
     else if(ACC.slider.mainSlideCount > ACC.slider.sliderThumbMinSlides){
       this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+      // this.activeSliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
     }
 
     this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
@@ -128,7 +133,8 @@ ACC.slider = {
     $('#zoomModal').one('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
         ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
-        ACC.slider.sliderThumbZoom = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
+        // ACC.slider.sliderThumbZoom = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
+        ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
         ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
 
         ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
