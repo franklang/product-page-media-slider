@@ -44,11 +44,11 @@ ACC.slider = {
       startSlide: 0,
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.activeSlideInThumbSlider = newIndex;
-        ACC.slider.checkIfConditionsMatches();
+        // ACC.slider.checkIfConditionsMatches();
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.activeSlideInThumbSlider = newIndex;
-        ACC.slider.checkIfConditionsMatches();
+        // ACC.slider.checkIfConditionsMatches();
       }
     },
     "main":{
@@ -67,13 +67,13 @@ ACC.slider = {
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
 
-        ACC.slider.checkIfConditionsMatches();
+        // ACC.slider.checkIfConditionsMatches();
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
 
-        ACC.slider.checkIfConditionsMatches();
+        // ACC.slider.checkIfConditionsMatches();
       }
     }
   },
@@ -114,7 +114,7 @@ ACC.slider = {
     $(this).children('a').click();
 
     ACC.slider.getActiveSlideInThumbSlider();
-    ACC.slider.checkIfConditionsMatches();
+    // ACC.slider.checkIfConditionsMatches();
   },
 
   hoverIntent: function($pager){
@@ -177,6 +177,10 @@ ACC.slider = {
       }
     }
 
+    // ici, exploiter la fonction ACC.slider.checkIfConditionsMatches();
+    ACC.slider.checkIfConditionsMatches();
+    // si la condition matche, alors activeSlideInThumbSlider = 2
+    // sinon activeSlideInThumbSlider = y
     ACC.slider.activeSlideInThumbSlider = y;
   },
 
