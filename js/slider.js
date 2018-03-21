@@ -11,12 +11,14 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
   _autoload: [
-    ["init", $(".bxslider").length > 0]
+    ["test", $("#sliders").length > 0]
   ],
 
   newIndex: null,
   $thumb: $('#sliderThumb'),
   $main: $('#sliderMain'),
+  $thumbZoom: $('#sliderThumbZoom'),
+  $mainZoom: $('#sliderMainZoom'),
   sliderThumb: null,
     sliderThumbMinSlides: 6,
     // Currently not implemented
@@ -30,7 +32,9 @@ ACC.slider = {
   sliderConfig:{
     "thumb":{
       mode: 'vertical',
-      slideWidth: 300,
+      controls: true,
+      nextText: '',
+      prevText: '',
       minSlides: 0,
       slideMargin: 10,
       infiniteLoop: false,
@@ -39,6 +43,8 @@ ACC.slider = {
       startSlide: 0
     },
     "main":{
+      nextText: '',
+      prevText: '',
       pagerCustom: '#sliderThumb',
       onSlideBefore: function($slideElement, oldIndex, newIndex){
         ACC.slider.newIndex = newIndex;
@@ -59,13 +65,32 @@ ACC.slider = {
     }
   },
 
+  test: function(){
+    var amountOfImages = $('#sliderMain').children('li').length;
+    ACC.slider.mainSlideCount = amountOfImages;
+
+    if(ACC.slider.mainSlideCount > 1){
+      this.init();
+    }
+    else{
+      this.handleModal();
+    }
+  },
+
   init: function(){
     ACC.slider.sliderConfig.thumb.minSlides = ACC.slider.sliderThumbMinSlides;
 
-    this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+    if(ACC.slider.mainSlideCount <= ACC.slider.sliderThumbMinSlides){
+      this.sliderConfig.thumb.controls = false;
+      this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+    }
+    else if(ACC.slider.mainSlideCount > ACC.slider.sliderThumbMinSlides){
+      this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
+    }
+
     this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
 
-    this.hoverIntent();
+    this.hoverIntent(ACC.slider.$thumb);
     this.handleSlideChanges();
     this.getActiveSlideInThumbSlider();
     this.handleModal();
@@ -78,8 +103,8 @@ ACC.slider = {
     ACC.slider.getActiveSlideInThumbSlider();
   },
 
-  hoverIntent: function(){
-    this.$thumb.hoverIntent({
+  hoverIntent: function($pager){
+    $pager.hoverIntent({
       over: this.onMouseOverThumb,
       selector: 'li',
       sensivity: 12
@@ -98,16 +123,34 @@ ACC.slider = {
   },
 
   handleModal: function(){
-    $('#zoomModal').on('shown.bs.modal', function(){
-      $('#triggerModal').hide();
-      $('#sliders').appendTo('#modalSliders');
+    var $pageSlidersControls = $('.bx-controls', '#pageSliders');
+
+    $('#zoomModal').one('shown.bs.modal', function(){
+      if(ACC.slider.mainSlideCount > 1){
+        ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
+        ACC.slider.sliderThumbZoom = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
+        ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
+
+        ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
+        ACC.slider.handleSlideChanges();
+        ACC.slider.getActiveSlideInThumbSlider();
+
+        // Uncomment line below whenever #sliderMain gets reloaded (doesn't happen by now...)
+        // ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumb';
+      }
+    }).on('shown.bs.modal', function(){
+      if(ACC.slider.mainSlideCount > 1){
+        $pageSlidersControls.hide();
+      }
 
       ACC.slider.triggerWindowResizeEvent();
     }).on('hidden.bs.modal', function(){
-      $('#triggerModal').show();
-      $('#sliders').appendTo('#pageSliders');
+      if(ACC.slider.mainSlideCount > 1){
+        $pageSlidersControls.show();
 
-      ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+        ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+      }
+
       ACC.slider.triggerWindowResizeEvent();
     });
   },
