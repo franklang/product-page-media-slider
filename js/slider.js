@@ -133,20 +133,17 @@ ACC.slider = {
     $('#zoomModal').one('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
         ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
-        // ACC.slider.sliderThumbZoom = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
         ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
         ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
-
-        ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
-        ACC.slider.handleSlideChanges();
-        ACC.slider.getActiveSlideInThumbSlider();
-
-        // Uncomment line below whenever #sliderMain gets reloaded (doesn't happen by now...)
-        // ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumb';
       }
     }).on('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
         $pageSlidersControls.hide();
+
+        ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+        ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.newIndex+')').children('a').click();
+
+        ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
       }
 
       ACC.slider.triggerWindowResizeEvent();
@@ -154,7 +151,11 @@ ACC.slider = {
       if(ACC.slider.mainSlideCount > 1){
         $pageSlidersControls.show();
 
+        ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumb';
+        ACC.slider.sliderThumb = ACC.slider.$thumb.bxSlider(ACC.slider.sliderConfig.thumb);
+
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
+        ACC.slider.$thumb.find('li:eq('+ACC.slider.newIndex+')').children('a').click();
       }
 
       ACC.slider.triggerWindowResizeEvent();
