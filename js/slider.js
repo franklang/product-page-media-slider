@@ -14,11 +14,6 @@ ACC.slider = {
     ["test", $("#sliders").length != 0]
   ],
 
-  thumbOldIndex: null,
-  thumbNewIndex: 0,
-  mainOldIndex: null,
-  mainNewIndex: 0,
-
   $thumb: $('#sliderThumb'),
   $main: $('#sliderMain'),
   $thumbZoom: $('#sliderThumbZoom'),
@@ -48,21 +43,11 @@ ACC.slider = {
       pager: false,
       startSlide: 0,
       onSlideNext: function($slideElement, oldIndex, newIndex){
-        ACC.slider.$thumbSlideElement = $slideElement;
-        ACC.slider.thumbOldIndex = oldIndex;
-        ACC.slider.thumbNewIndex = newIndex;
-
         ACC.slider.activeSlideInThumbSlider = newIndex;
-
         ACC.slider.checkIfConditionsMatches();
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
-        ACC.slider.$thumbSlideElement = $slideElement;
-        ACC.slider.thumbOldIndex = oldIndex;
-        ACC.slider.thumbNewIndex = newIndex;
-
         ACC.slider.activeSlideInThumbSlider = newIndex;
-
         ACC.slider.checkIfConditionsMatches();
       }
     },
