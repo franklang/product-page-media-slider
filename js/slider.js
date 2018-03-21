@@ -41,7 +41,13 @@ ACC.slider = {
       infiniteLoop: false,
       hideControlOnEnd: true,
       pager: false,
-      startSlide: 0
+      startSlide: 0,
+      onSlideNext: function($slideElement, oldIndex, newIndex){
+        ACC.slider.activeSlideInThumbSlider = newIndex;
+      },
+      onSlidePrev: function($slideElement, oldIndex, newIndex){
+        ACC.slider.activeSlideInThumbSlider = newIndex;
+      }
     },
     "main":{
       nextText: '',
@@ -58,12 +64,10 @@ ACC.slider = {
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        // ACC.slider.activeSliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        // ACC.slider.activeSliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
       }
     }
   },
@@ -86,11 +90,9 @@ ACC.slider = {
     if(ACC.slider.mainSlideCount <= ACC.slider.sliderThumbMinSlides){
       this.sliderConfig.thumb.controls = false;
       this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
-      // this.activeSliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
     }
     else if(ACC.slider.mainSlideCount > ACC.slider.sliderThumbMinSlides){
       this.sliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
-      // this.activeSliderThumb = this.$thumb.bxSlider(this.sliderConfig.thumb);
     }
 
     this.sliderMain = this.$main.bxSlider(this.sliderConfig.main);
@@ -125,6 +127,10 @@ ACC.slider = {
       thumbSlideTriggerValues[i] *= this.sliderConfig.thumb.minSlides;
     }
     this.thumbSlideTriggerValues = thumbSlideTriggerValues;
+
+    // $('a', '.bxslider-thumb').on('click', function(){
+    //   ACC.slider.activeSlideInThumbSlider = $(this).attr('data-slide-index');
+    // });
   },
 
   handleModal: function(){
