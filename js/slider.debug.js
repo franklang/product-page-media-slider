@@ -1,7 +1,7 @@
 ACC.sliderDebug = {
 
   _autoload: [
-    ["debugInfo", $(".bxslider").length > 0]
+    ["debugInfo", $(".bxslider").length != 0]
   ],
 
   debugInfo: function(){
