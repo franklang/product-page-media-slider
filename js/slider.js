@@ -11,7 +11,7 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
   _autoload: [
-    ["test", $("#sliders").length != 0]
+    ["checkIfSliderCanBeInitialized", $("#sliders").length != 0]
   ],
 
   $thumb: $('#sliderThumb'),
@@ -72,7 +72,7 @@ ACC.slider = {
     }
   },
 
-  test: function(){
+  checkIfSliderCanBeInitialized: function(){
     var amountOfImages = $('#sliderMain').children('li').length;
     ACC.slider.mainSlideCount = amountOfImages;
 
@@ -138,7 +138,7 @@ ACC.slider = {
 
         ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
         ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
-        ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
+        ACC.slider.sliderMain = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
 
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
         ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.activeSlideInMainSlider+')').children('a').click();

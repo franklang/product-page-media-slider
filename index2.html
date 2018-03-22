@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+      <meta charset="UTF-8" />
+      <meta name="author" content="" />
+      <meta name="copyright" content="" />
+      <meta name="robots" content="index, follow" />
+      <meta name="description" content="" />
+      <meta name="keywords" content="" />
+
+      <title>Product detail media slider</title>
+
+      <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen,projection" />
+      <link rel="stylesheet" href="css/jquery.bxslider.css" type="text/css" media="screen,projection" />
+      <link rel="stylesheet" href="css/slider.css" type="text/css" media="screen,projection" />
+      <link rel="stylesheet" href="css/debug-info.css" type="text/css" media="screen,projection" />
+      <link rel="index" title="" href="" />
+
+      <!--[if lt IE 9 ]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+
+      <script src="js/jquery-2.2.4.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/project.bxslider.min.js"></script>
+      <script src="js/jquery.hoverIntent.min.js"></script>
+
+  </head>
+
+  <body class="" lang="fr-FR">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <p><a href="https://web.archive.org/web/20131211061301/http://bxslider.com">Doc officielle bxSlider</a>, crédit images <a href="https://picsum.photos/">Lorem Picsum</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-2">
+              <!-- zoom modal trigger -->
+              <button type="button" id="triggerModal" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Zoom</button>
+            </div>
+            <div class="col-md-10">
+              <img class="img-responsive" src="images/main-00.jpeg" /></li>
+            </div>
+          </div><!-- end: .row -->
+        </div>
+        <div class="col-md-4">
+          <h1>Section 1.10.32 du "De Finibus Bonorum et Malorum" de Ciceron (45 av. J.-C.)</h1>
+          <p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>
+        </div>
+      </div>
+    </div><!-- end: .container -->
+
+    <!-- zoom modal -->
+    <div id="zoomModal" class="modal modal-thumb-is-slider fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myZoomModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <!-- <h4 class="modal-title" id="gridSystemModalLabel">Zoom Modal</h4> -->
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <img class="img-responsive" src="images/main-00-hd.jpeg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end: zoom modal -->
+
+    <script src="js/autoload.js"></script>
+    <script src="js/slider.js"></script>
+    <script src="js/slider.debug.js"></script>
+  </body>
+
+</html>
