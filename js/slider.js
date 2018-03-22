@@ -11,7 +11,7 @@ var ACC = ACC || {}; // make sure ACC is available
 ACC.slider = {
 
   _autoload: [
-    ["checkIfSliderCanBeInitialized", $("#sliders").length != 0]
+    ["test", $("#sliders").length != 0]
   ],
 
   $thumb: $('#sliderThumb'),
@@ -72,7 +72,7 @@ ACC.slider = {
     }
   },
 
-  checkIfSliderCanBeInitialized: function(){
+  test: function(){
     var amountOfImages = $('#sliderMain').children('li').length;
     ACC.slider.mainSlideCount = amountOfImages;
 
@@ -132,18 +132,16 @@ ACC.slider = {
   handleModal: function(){
     var $pageSlidersControls = $('.bx-controls', '#pageSliders');
 
-    $('#zoomModal').one('shown.bs.modal', function(){
-      ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
-      ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
-      ACC.slider.sliderMain = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
-    });
-
     $('#zoomModal').on('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
         $pageSlidersControls.hide();
 
+        ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
+        ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
+        ACC.slider.sliderMainZoom = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
+
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        ACC.slider.sliderMain.goToSlide(ACC.slider.activeSlideInMainSlider);
+        ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.activeSlideInMainSlider+')').children('a').click();
 
         ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
       }
