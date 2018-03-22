@@ -132,16 +132,18 @@ ACC.slider = {
   handleModal: function(){
     var $pageSlidersControls = $('.bx-controls', '#pageSliders');
 
+    $('#zoomModal').one('shown.bs.modal', function(){
+      ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
+      ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
+      ACC.slider.sliderMain = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
+    });
+
     $('#zoomModal').on('shown.bs.modal', function(){
       if(ACC.slider.mainSlideCount > 1){
         $pageSlidersControls.hide();
 
-        ACC.slider.sliderConfig.main.pagerCustom = '#sliderThumbZoom';
-        ACC.slider.sliderThumb = ACC.slider.$thumbZoom.bxSlider(ACC.slider.sliderConfig.thumb);
-        ACC.slider.sliderMain = ACC.slider.$mainZoom.bxSlider(ACC.slider.sliderConfig.main);
-
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-        ACC.slider.$thumbZoom.find('li:eq('+ACC.slider.activeSlideInMainSlider+')').children('a').click();
+        ACC.slider.sliderMain.goToSlide(ACC.slider.activeSlideInMainSlider);
 
         ACC.slider.hoverIntent(ACC.slider.$thumbZoom);
       }
