@@ -28,7 +28,7 @@ ACC.slider = {
   mainSlideCount: null,
   activeSlideInThumbSlider: 0,
   activeSlideInMainSlider: 0,
-  thumbSlideTriggerValues: null,
+  firstItemOfEachSlideInThumbSlider: null,
 
   sliderConfig:{
     "thumb":{
@@ -122,11 +122,11 @@ ACC.slider = {
     this.mainSlideCount = this.sliderMain.getSlideCount();
     this.thumbSlideCount = Math.ceil(this.mainSlideCount / this.sliderConfig.thumb.minSlides);
 
-    var thumbSlideTriggerValues = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
-    for (var i = 0; i < thumbSlideTriggerValues.length; i++) {
-      thumbSlideTriggerValues[i] *= this.sliderConfig.thumb.minSlides;
+    var firstItemOfEachSlideInThumbSlider = new Array(this.thumbSlideCount).fill(null).map((u, i) => i);
+    for (var i = 0; i < firstItemOfEachSlideInThumbSlider.length; i++) {
+      firstItemOfEachSlideInThumbSlider[i] *= this.sliderConfig.thumb.minSlides;
     }
-    this.thumbSlideTriggerValues = thumbSlideTriggerValues;
+    this.firstItemOfEachSlideInThumbSlider = firstItemOfEachSlideInThumbSlider;
   },
 
   handleModal: function(){
@@ -165,7 +165,7 @@ ACC.slider = {
   },
 
   getActiveSlideInThumbSlider: function(){
-    var i; var y = 0; var val = ACC.slider.activeSlideInMainSlider; var zones = ACC.slider.thumbSlideTriggerValues;
+    var i; var y = 0; var val = ACC.slider.activeSlideInMainSlider; var zones = ACC.slider.firstItemOfEachSlideInThumbSlider;
     for (i = 0; i < zones.length; i++){
       if (val >= zones[i]){
         y = i;
