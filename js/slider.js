@@ -44,11 +44,9 @@ ACC.slider = {
       startSlide: 0,
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.activeSlideInThumbSlider = newIndex;
-        // ACC.slider.checkIfConditionsMatches();
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.activeSlideInThumbSlider = newIndex;
-        // ACC.slider.checkIfConditionsMatches();
       }
     },
     "main":{
@@ -66,14 +64,10 @@ ACC.slider = {
       onSlideNext: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-
-        // ACC.slider.checkIfConditionsMatches();
       },
       onSlidePrev: function($slideElement, oldIndex, newIndex){
         ACC.slider.getActiveSlideInThumbSlider();
         ACC.slider.sliderThumb.goToSlide(ACC.slider.activeSlideInThumbSlider);
-
-        // ACC.slider.checkIfConditionsMatches();
       }
     }
   },
@@ -114,7 +108,6 @@ ACC.slider = {
     $(this).children('a').click();
 
     ACC.slider.getActiveSlideInThumbSlider();
-    // ACC.slider.checkIfConditionsMatches();
   },
 
   hoverIntent: function($pager){
@@ -177,24 +170,15 @@ ACC.slider = {
       }
     }
 
-    // ici, exploiter la fonction ACC.slider.checkIfConditionsMatches();
-    ACC.slider.checkIfConditionsMatches();
-    // si la condition matche, alors activeSlideInThumbSlider = 2
-    // sinon activeSlideInThumbSlider = y
-    ACC.slider.activeSlideInThumbSlider = y;
-  },
-
-  checkIfConditionsMatches: function(){
-    // Si thumbSlide = 2 et hover sur [15,14,13,12,11,10], alors activeSlideInThumbSlider = 2
-    // &&
-    // activeSlideInMainSlider >= (mainSlideCount - sliderThumbMinSlides)
     if(
       ACC.slider.activeSlideInThumbSlider == (ACC.slider.thumbSlideCount -1)
     &&
       ACC.slider.activeSlideInMainSlider >= (ACC.slider.mainSlideCount - ACC.slider.sliderThumbMinSlides)
     ){
-      console.log(ACC.slider.activeSlideInThumbSlider+' == '+(ACC.slider.thumbSlideCount -1));
-      console.log(ACC.slider.activeSlideInMainSlider+' >= '+(ACC.slider.mainSlideCount - ACC.slider.sliderThumbMinSlides));
+      ACC.slider.activeSlideInThumbSlider = ACC.slider.thumbSlideCount -1;
+    }
+    else{
+      ACC.slider.activeSlideInThumbSlider = y;
     }
   },
 
