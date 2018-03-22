@@ -13,20 +13,20 @@ ACC.sliderDebug = {
       +'  <li>Active image: <strong id="newIndex"></strong></li>'
       +'  <li>Active slide in main slider: <strong id="activeSlideInMainSlider"></strong></li>'
       +'  <li>Active slide in thumb slider: <strong id="activeSlideInThumbSlider"></strong></li>'
-      +'  <li>First image of each slide in thumb slider: <strong id="firstImageOfEachSlideInThumbSlider"></strong></li>'
+      +'  <li>First item of each slide in thumb slider: <strong id="firstItemOfEachSlideInThumbSlider"></strong></li>'
       +'</ul>');
 
     $('#mainSlideCount, #mainSlideCount2').text(ACC.slider.mainSlideCount);
     $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);
     $('#newIndex, #activeSlideInMainSlider').text(+ACC.slider.activeSlideInMainSlider);
     $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
-    $('#firstImageOfEachSlideInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
+    $('#firstItemOfEachSlideInThumbSlider').text(ACC.slider.firstItemOfEachSlideInThumbSlider);
     $(document).on('click', ['.bx-prev', '.bx-next'], function(e) {
       $('#newIndex, #activeSlideInMainSlider').text(ACC.slider.activeSlideInMainSlider);
       $('#activeSlideInThumbSlider').text(ACC.slider.activeSlideInThumbSlider);
     });
     $(document).on('mouseover', '#sliderThumb li', function(e) {
-      $('#firstImageOfEachSlideInThumbSlider').text(ACC.slider.thumbSlideTriggerValues);
+      $('#firstItemOfEachSlideInThumbSlider').text(ACC.slider.firstItemOfEachSlideInThumbSlider);
     });
     $('#zoomModal').on('shown.bs.modal', function(){
       $('#thumbSlideCount').text(ACC.slider.thumbSlideCount);

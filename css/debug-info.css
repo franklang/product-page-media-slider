@@ -3,6 +3,7 @@ body {
 }
 #debugInfo {
   position: fixed;
+  z-index: 1050;
   top: 15px;
   left: 15px;
 
@@ -17,3 +18,56 @@ body {
   padding: 0;
   list-style-position: inside;
 }
+.bxslider-main li:before,
+.bxslider-thumb li a:before {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  padding: 2px 6px;
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+}
+.bxslider-main li:before,
+.bxslider-thumb li a.active:before {
+  background: tomato;
+}
+
+#sliderMain {
+  counter-reset: my-main-counter -1;
+}
+#sliderMainZoom {
+  counter-reset: my-main-zoom-counter -1;
+}
+#sliderThumb {
+  counter-reset: my-thumb-counter -1;
+}
+#sliderThumbZoom {
+  counter-reset: my-thumb-zoom-counter -1;
+}
+#sliderMain li:not(.bx-clone) {
+  counter-increment: my-main-counter;
+}
+#sliderMain li:not(.bx-clone):before {
+  content: counter(my-main-counter);
+}
+#sliderMainZoom li:not(.bx-clone) {
+  counter-increment: my-main-zoom-counter;
+}
+#sliderMainZoom li:not(.bx-clone):before {
+  content: counter(my-main-zoom-counter);
+}
+#sliderThumb li:not(.bx-clone) {
+  counter-increment: my-thumb-counter;
+}
+#sliderThumb li a:not(.bx-clone):before {
+  content: counter(my-thumb-counter);
+}
+#sliderThumbZoom li:not(.bx-clone) {
+  counter-increment: my-thumb-zoom-counter;
+}
+#sliderThumbZoom li a:not(.bx-clone):before {
+  content: counter(my-thumb-zoom-counter);
+}
+
